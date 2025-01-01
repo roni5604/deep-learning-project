@@ -1,101 +1,97 @@
 
 # Face Expression Recognition Project
 
-A comprehensive project demonstrating baseline, logistic regression, a deeper MLP (multi-layer perceptron), and an advanced CNN (with data augmentation) to classify facial expressions.
+A project to classify facial expressions using multiple approaches:
+- Baseline (majority class)
+- Logistic Regression
+- Linear Regression (for classification, not typical)
+- Deeper MLP (multi-layer perceptron)
+- Advanced CNN (with data augmentation)
 
 ---
 
 ## Table of Contents
-1. [Project Overview](#project-overview)
+1. [Overview](#overview)
 2. [Requirements](#requirements)
 3. [Installation](#installation)
 4. [Dataset Preparation](#dataset-preparation)
-5. [Running the Code](#running-the-code)
+5. [Running the Scripts](#running-the-scripts)
 6. [Expected Outputs](#expected-outputs)
 7. [Troubleshooting](#troubleshooting)
 
 ---
 
-## Project Overview
+## Overview
 
-- **Goal**: Classify images into one of several facial expression classes (e.g., happy, sad, angry, etc.).  
-- **Models Implemented**:
-  1. **Baseline** (majority class).
-  2. **Logistic Regression**.
-  3. **Deeper MLP** (two hidden layers + dropout).
-  4. **Advanced CNN** (with data augmentation).
-
-The dataset comprises grayscale images (48×48 pixels). Data is split into **train**, **validation**, and **test** sets (70%–15%–15%).
+- **Goal**: Detect a person’s facial expression from grayscale images (48×48).
+- **Dataset**: [Kaggle - Face Expression Recognition Dataset](https://www.kaggle.com/datasets/jonathanoheix/face-expression-recognition-dataset).
+- **Splits**: 70% train, 15% validation, 15% test.
+- **Models**:
+  1. **Baseline** (predict majority class).
+  2. **Logistic Regression** with scaling.
+  3. **Linear Regression** (experimental).
+  4. **Deeper MLP** (two hidden layers + dropout).
+  5. **Advanced CNN** (augmentations + dropout).
 
 ---
 
 ## Requirements
 
 - **Python** >= 3.8
-- **Pip** for dependencies
-- **PyTorch** (CPU or GPU)
+- **PyTorch**, **torchvision**
 - **scikit-learn**, **numpy**, **Pillow**, **matplotlib**, etc.
-- **Kaggle** (optional) if you want to automatically download the dataset.
+- **Kaggle** (optional) for dataset download.
 
-You can see the specific package versions in `requirements.txt`.
+The versions are listed in `requirements.txt`.
 
 ---
 
 ## Installation
 
-1. **Clone/Download** this repository or place these files in a dedicated folder:
+1. **Clone or download**:
    ```bash
-   git clone https://github.com/roni5604/face_expression_project.git
+   git clone https://github.com/your-username/face_expression_project.git
    cd face_expression_project
    ```
-
-2. **Create a virtual environment** (recommended):
+2. **Create virtual environment** (recommended):
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
-   On Windows, use:
+   On Windows:
    ```bash
    python -m venv venv
    .\venv\Scripts\activate
    ```
-
-3. **Install required packages**:
+3. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
-   > For macOS M1/M2, check [PyTorch official docs](https://pytorch.org) for a compatible build if needed.
-
-4. **(Optional) Kaggle Setup** if you plan to use the Kaggle API:
-   - Place `kaggle.json` in `~/.kaggle/` with the right permissions.
+4. **(Optional) Kaggle**:
+   - Place `kaggle.json` in `~/.kaggle/`.
    - `pip install kaggle`.
 
 ---
 
 ## Dataset Preparation
 
-1. **Download the dataset** from Kaggle (optional):
+1. **Download** (optional):
    ```bash
    python scripts/dataset_download.py
    ```
-   This will download and unzip into `data/face-expression-recognition-dataset/`.
-
-2. **Prepare the dataset**:
+2. **Prepare** (merge old train/val, re-split):
    ```bash
    python scripts/prepare_dataset.py
    ```
-   - Merges original `train` and `validation` sets from the Kaggle folder.
-   - Re-splits them into **new_train**, **new_validation**, and **test**.
-
-You can skip the above steps if your data is already in the correct location.
+   Creates `new_train`, `new_validation`, and `test` directories under `data/face-expression-recognition-dataset/images/images/`.
 
 ---
 
-## Running the Code
+## Running the Scripts
 
-Execute scripts in this order (or selectively) to see each model’s performance:
+In order (or selectively):
 
-1. **Baseline** (Majority Class):
+1. **Baseline** (majority class):
    ```bash
    python baseline.py
    ```
@@ -103,25 +99,29 @@ Execute scripts in this order (or selectively) to see each model’s performance
    ```bash
    python logistic_regression.py
    ```
-3. **Deeper MLP** (two hidden layers + dropout):
+3. **Linear Regression** (classification by rounding outputs):
+   ```bash
+   python linear_regression.py
+   ```
+4. **Deeper MLP**:
    ```bash
    python basic_nn.py
    ```
-4. **Advanced CNN** (with data augmentation):
+5. **Advanced CNN** (data augmentation):
    ```bash
    python advanced_cnn.py
    ```
-5. **Summary** (optional):
-   ```bash
-   python final_summary.py
-   ```
-   - Prints a concise table of final metrics.
+
+**Optional**: Summarize results via:
+```bash
+python final_summary.py
+```
 
 ---
 
 ## Expected Outputs
 
-Below is an **example** of final validation metrics you might see (actual values can vary):
+Below are the **final** validation metrics from the latest run:
 
 1. **Baseline**  
    - Accuracy: 0.2504  
@@ -133,30 +133,29 @@ Below is an **example** of final validation metrics you might see (actual values
    - Precision: 0.3286  
    - Recall: 0.3032  
 
-3. **Deeper MLP**  
-   - Accuracy: 0.3766  
-   - Precision: 0.2933  
-   - Recall: 0.3069  
+3. **Linear Regression**  
+   - Accuracy: 0.2207  
+   - Precision: 0.2207  
+   - Recall: 0.1542  
 
-4. **Advanced CNN** (Augment)  
-   - Accuracy: 0.5437  
-   - Precision: 0.5883  
-   - Recall: 0.4619  
+4. **Deeper MLP**  
+   - Accuracy: 0.4548  
+   - Precision: 0.4717  
+   - Recall: 0.4163  
 
-When you run the models, the console prints intermediate epoch logs (for MLP and CNN) and final metrics on the validation set.
+5. **Advanced CNN**  
+   - Accuracy: 0.5597  
+   - Precision: 0.5698  
+   - Recall: 0.4804  
 
 ---
 
 ## Troubleshooting
 
-1. **ConvergenceWarning** (Logistic Regression):  
-   - Increase `max_iter` or normalize data more thoroughly.  
-2. **Low Performance**:
-   - Try increasing epochs, adjusting learning rates, or using GPU.  
-   - Check if your data is placed in the correct folders.  
-3. **Slow Training**:
-   - Use a GPU if available (`torch.cuda.is_available()`).  
-   - Reduce batch size for memory constraints, or optimize your network.
+- **ConvergenceWarning**: Increase `max_iter` for logistic regression, or standardize features more thoroughly.
+- **Low Accuracy**: Increase epochs, tweak batch size, or refine architecture.
+- **No GPU**: Code runs on CPU but might be slow.  
+- **Overfitting**: Increase dropout/weight decay, add more augmentation.  
+- **Underfitting**: Use deeper models, more epochs, or different LR schedules.
 
-**For deeper explanations** of each step, see the project’s `final_report.md`, which includes a detailed analysis of results, improvements, and future directions.
-
+Refer to `final_report.md` for deeper analysis of each model’s performance and potential future improvements.
